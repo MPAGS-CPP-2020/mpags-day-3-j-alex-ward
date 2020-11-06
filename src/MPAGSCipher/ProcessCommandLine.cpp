@@ -3,14 +3,8 @@
 
 // Our project headers
 #include "ProcessCommandLine.hpp"
-
 bool processCommandLine(const std::vector<std::string>& args,
-                        bool& helpRequested,
-                        bool& versionRequested,
-                        std::string& inputFile,
-                        std::string& outputFile,
-                        std::string& cipher_key,
-                        bool& encrypt)
+                        ProgramSettings& cipherSettings)
 {
   // Status flag to indicate whether or not the parsing was successful
   bool processStatus(true);
@@ -25,12 +19,12 @@ bool processCommandLine(const std::vector<std::string>& args,
 
     if (args[i] == "-h" || args[i] == "--help") {
       // Set the indicator and terminate the loop
-      helpRequested = true;
+      cipherSettings.helpRequested = true;
       break;
     }
     else if (args[i] == "--version") {
       // Set the indicator and terminate the loop
-      versionRequested = true;
+      cipherSettings.versionRequested = true;
       break;
     }
     else if (args[i] == "-i") {
@@ -44,7 +38,7 @@ bool processCommandLine(const std::vector<std::string>& args,
       }
       else {
         // Got filename, so assign value and advance past it
-        inputFile = args[i+1];
+        cipherSettings.inputFile = args[i+1];
         ++i;
       }
     }
@@ -59,7 +53,7 @@ bool processCommandLine(const std::vector<std::string>& args,
       }
       else {
         // Got filename, so assign value and advance past it
-        outputFile = args[i+1];
+        cipherSettings.outputFile = args[i+1];
         ++i;
       }
     }
@@ -74,15 +68,15 @@ bool processCommandLine(const std::vector<std::string>& args,
       }
       else {
         // Got the key, so assign the value and advance past it
-        cipher_key = args[i+1];
+        cipherSettings.cipher_key = args[i+1];
         ++i;
       }
     }
     else if ( args[i] == "--encrypt" ) {
-            encrypt = true;
+            cipherSettings.encrypt = true;
     }
     else if ( args[i] == "--decrypt" ) {
-            encrypt = false;
+            cipherSettings.encrypt = false;
     }
     else {
       // Have encoutered an unknown flag, output an error message, set the flag
