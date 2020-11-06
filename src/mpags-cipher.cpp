@@ -8,6 +8,7 @@
 #include "TransformChar.hpp"
 #include "ProcessCommandLine.hpp"
 #include "RunCaesarCipher.hpp"
+#include "CaesarCipher.hpp"
   
 // Main function of the mpags-cipher program
 int main(int argc, char* argv[])
@@ -96,7 +97,7 @@ int main(int argc, char* argv[])
 
   // We have the key as a string, but the Caesar cipher needs an unsigned long, so we first need to convert it
   // We default to having a key of 0, i.e. no encryption, if no key was provided on the command line
-  size_t caesar_key {0};
+  /*size_t caesar_key {0};
   if ( ! cipherSettings.cipher_key.empty() ) {
     // Before doing the conversion we should check that the string contains a
     // valid positive integer.
@@ -117,10 +118,11 @@ int main(int argc, char* argv[])
       }
     }
     caesar_key = std::stoul(cipherSettings.cipher_key);
-  }
+  }*/
+  CaesarCipher caesar_key(cipherSettings.cipher_key);
 
   // Run the Caesar cipher (using the specified key and encrypt/decrypt flag) on the input text
-  std::string outputText { runCaesarCipher( inputText, caesar_key, cipherSettings.encrypt ) };
+  std::string outputText { runCaesarCipher( inputText, caesar_key.key_, cipherSettings.encrypt ) };
 
   // Output the transliterated text
   if (!cipherSettings.outputFile.empty()) {
