@@ -5,6 +5,7 @@
 
 // Our project headers
 #include "CaesarCipher.hpp"
+#include "CipherMode.hpp"
 
 CaesarCipher::CaesarCipher(const size_t keyValue)
     : key_{keyValue} //,
@@ -28,7 +29,7 @@ CaesarCipher::CaesarCipher(const std::string &keyString)
     key_ = std::stoul(keyString);
   }
 }
-std::string CaesarCipher::applyCipher(const std::string &inputText, const bool encrypt) const
+std::string CaesarCipher::applyCipher(const std::string &inputText, EncryptEnum encrypt) const
   {
     std::string outputText{};
     //const std::vector<char> alphabet = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
@@ -46,19 +47,29 @@ std::string CaesarCipher::applyCipher(const std::string &inputText, const bool e
 
         if (origChar == alphabet_[i])
         {
-
-          if (encrypt)
+          //switch here
+          //EncryptEnum encryptOption = EncryptEnum::Decrypt;
+          //EncryptEnum encryptSwitch{encryptOption};
+          switch(encrypt){
+            case EncryptEnum::Encrypt:
+              processedChar = alphabet_[(i + truncatedKey) % alphabetSize];
+              return outputText += processedChar;
+            case EncryptEnum::Decrypt:
+              processedChar = alphabet_[(i + alphabetSize - truncatedKey) % alphabetSize];
+              return outputText += processedChar;
+          }
+          /*if (encrypt)
           {
-            processedChar = alphabet_[(i + truncatedKey) % alphabetSize];
+            //processedChar = alphabet_[(i + truncatedKey) % alphabetSize];
           }
           else
           {
-            processedChar = alphabet_[(i + alphabetSize - truncatedKey) % alphabetSize];
+            //processedChar = alphabet_[(i + alphabetSize - truncatedKey) % alphabetSize];
           }
-          break;
+          break;*/
         }
       }
-      outputText += processedChar;
+      //outputText += processedChar;
     }
     return outputText;
-  }
+}

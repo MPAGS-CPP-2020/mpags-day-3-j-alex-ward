@@ -9,6 +9,7 @@
 #include "ProcessCommandLine.hpp"
 #include "RunCaesarCipher.hpp"
 #include "CaesarCipher.hpp"
+#include "CipherMode.hpp"
   
 // Main function of the mpags-cipher program
 int main(int argc, char* argv[])
@@ -17,7 +18,8 @@ int main(int argc, char* argv[])
   const std::vector<std::string> cmdLineArgs {argv, argv+argc};
 
   // Options that might be set by the command-line arguments
-  ProgramSettings cipherSettings {false, false, "", "", "", true};
+  //EncryptEnum ciphermode = EncryptEnum::Encrypt;
+  ProgramSettings cipherSettings {false, false, "", "", "", EncryptEnum::Encrypt};
 
   /*bool helpRequested {false};
   bool versionRequested {false};
@@ -25,6 +27,7 @@ int main(int argc, char* argv[])
   std::string outputFile {""};
   std::string cipher_key {""};
   bool encrypt {true};*/
+  //true = ciphermode.encrypt
 
   // Process command line arguments
   bool cmdLineStatus { processCommandLine(cmdLineArgs, cipherSettings) };
@@ -122,7 +125,8 @@ int main(int argc, char* argv[])
   CaesarCipher caesar_key(cipherSettings.cipher_key);
 
   // Run the Caesar cipher (using the specified key and encrypt/decrypt flag) on the input text
-  std::string outputText { runCaesarCipher( inputText, caesar_key.key_, cipherSettings.encrypt ) };
+  //std::string outputText { runCaesarCipher( inputText, caesar_key.key_, cipherSettings.encrypt ) };
+  std::string outputText { caesar_key.applyCipher( inputText, cipherSettings.encrypt ) };
 
   // Output the transliterated text
   if (!cipherSettings.outputFile.empty()) {
